@@ -10,9 +10,7 @@ and automatic differentiation of hybrid quantum-classical computations.
 Features
 ========
 
-* feature1
-
-* feature2
+* Quantum Natural Gradient with measurement error mitigation
 
 
 Installation

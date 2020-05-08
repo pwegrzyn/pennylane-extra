@@ -1,3 +1,5 @@
+.. image:: https://travis-ci.com/pwegrzyn/pennylane-extra.svg?branch=master
+
 PennyLane Extra
 #########################
 

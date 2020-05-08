@@ -10,7 +10,7 @@ and automatic differentiation of hybrid quantum-classical computations.
 Features
 ========
 
-* Quantum Natural Gradient with measurement error mitigation
+* Measurement error mitigation on Qiskit devices
 
 
 Installation
@@ -20,7 +20,7 @@ PennyLane Extra requires both PennyLane and Qiskit. It can be installed via ``pi
 
 .. code-block:: bash
 
-    $ python -m pip install pennylane-extra
+    $ python -m pip install .
 
 Please refer to the `plugin documentation <https://pennylane-extra.readthedocs.io/>`_ as
 well as to the `PennyLane documentation <https://pennylane.readthedocs.io/>`_ for further reference.
@@ -29,6 +29,20 @@ Getting started
 ===============
 
 Once PennyLane Extra is installed, you can start using it's featrues.
+
+.. code-block:: python
+
+    import pennylane as qml
+    import pennylane_extra
+
+    @qml.qnode(dev)
+    def circuit(params):
+        qml.RX(params[0], wires=0)
+        qml.RY(params[1], wires=0)
+        return qml.expval(qml.PauliZ(0))
+
+    with.pennylane_extra.qiskit_measurement_error_mitigation():
+        print(circuit(np.array([0, 0]))
 
 For more details, see the
 `plugin usage guide <https://pennylane-extra.readthedocs.io/en/latest/usage.html>`_ and refer

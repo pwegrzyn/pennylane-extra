@@ -1,4 +1,5 @@
 import types
+import random
 from typing import Callable, Any
 from contextlib import contextmanager
 from functools import wraps
@@ -28,17 +29,23 @@ def _qiskit_generate_samples_MEM(self: QiskitDevice) -> np.array:
     # hardware or hardware simulator
 
     # ***here we actully perform the measurement error mitigation***
-    meas_calibs, state_labels = complete_meas_cal(qr=self._reg, circlabel='mcal')
+    meas_calibs, state_labels = complete_meas_cal(qr=self._reg, circlabel="mcal")
     mitigation_run_args = self.run_args.copy()
     mitigation_run_args["shots"] = NUMBER_OF_SHOTS_FOR_QISKIT_ERROR_MITIGATION
     meas_job = qiskit.execute(meas_calibs, backend=self.backend, **mitigation_run_args)
-    meas_fitter = CompleteMeasFitter(meas_job.result(), state_labels, circlabel='mcal')
-    #print(self._current_job.result().get_counts())
+
+    meas_fitter = CompleteMeasFitter(meas_job.result(), state_labels, circlabel="mcal")
     mitigated_results = meas_fitter.filter.apply(self._current_job.result())
-    
-    samples = mitigated_results.get_memory()
-    #print(mitigated_results.get_counts())
-    print(self._current_job.result().get_memory() == mitigated_results.get_memory())
+    current_job_shots = sum(self._current_job.result().get_counts().values())
+    summed_counts = sum(mitigated_results.get_counts().values())
+    probs = [value / summed_counts for value in mitigated_results.get_counts().values()]
+    samples = np.random.choice(
+        np.array(list(mitigated_results.get_counts().keys())),
+        current_job_shots,
+        p=probs,
+        replace=True,
+    )
+
     # reverse qubit order to match PennyLane convention
     return np.vstack([np.array([int(i) for i in s[::-1]]) for s in samples])
 

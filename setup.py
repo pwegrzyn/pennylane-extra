@@ -44,8 +44,6 @@ info = {
         "pennylane_extra"
     ],
 
-    #"entry_points": {"pennylane.misc": ["extra = pennylane_extra"]},
-
     # Place a one line description here. This will be shown by pip
     "description": "Extension to PennyLane adding various miscellaneous features",
     "long_description": open("README.rst").read(),

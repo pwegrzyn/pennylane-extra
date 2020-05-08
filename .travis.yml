@@ -7,6 +7,6 @@ install:
   - pip install pip --upgrade
   - pip install .
 script:
-  - python -m unittest tests
+  - python -m unittest tests/*
 after_success:
   - codecov

@@ -27,6 +27,7 @@ with open("pennylane_extra/_version.py") as f:
 requirements = [
   'pennylane @ git+https://github.com/XanaduAI/pennylane.git@54ec4caf946a6adef360874a743fa90bfa8c27d8#egg=pennylane',
   'pennylane-qiskit @ git+https://github.com/XanaduAI/pennylane-qiskit.git@0f3d845587a7801795b3c1a19de2a3282f9b17c3#egg=pennylane-qiskit'
+  'numpy==1.17.4'
 ]
 
 info = {

@@ -1,7 +1,7 @@
 PennyLane Extra
 #########################
 
-The PennyLane Extra plugin adds some new features to PennyLane.
+The PennyLane Extra plugin adds some new features to PennyLane. The documentation is still under development.
 
 `PennyLane <https://pennylane.readthedocs.io>`_ is a machine learning library for optimization
 and automatic differentiation of hybrid quantum-classical computations.
@@ -20,7 +20,12 @@ PennyLane Extra requires both PennyLane and Qiskit. It can be installed via ``pi
 
 .. code-block:: bash
 
+    $ git clone https://github.com/pwegrzyn/pennylane-extra
+    $ cd pennylane-extra
     $ python -m pip install .
+
+Currently only the 0.9.0-dev versions of PennyLane and PennyLane-qiskit are supported.
+They are specified as dependencies to this package.
 
 Please refer to the `plugin documentation <https://pennylane-extra.readthedocs.io/>`_ as
 well as to the `PennyLane documentation <https://pennylane.readthedocs.io/>`_ for further reference.
@@ -33,7 +38,9 @@ Once PennyLane Extra is installed, you can start using it's featrues.
 .. code-block:: python
 
     import pennylane as qml
-    import pennylane_extra
+    import pennylane_extra as qmle
+
+    dev = qml.device("default.qubit", wires=1)
 
     @qml.qnode(dev)
     def circuit(params):
@@ -41,7 +48,7 @@ Once PennyLane Extra is installed, you can start using it's featrues.
         qml.RY(params[1], wires=0)
         return qml.expval(qml.PauliZ(0))
 
-    with.pennylane_extra.qiskit_measurement_error_mitigation():
+    with qmle.qiskit_measurement_error_mitigation():
         print(circuit(np.array([0, 0]))
 
 For more details, see the

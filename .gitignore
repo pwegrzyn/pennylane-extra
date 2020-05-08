@@ -5,7 +5,6 @@ build
 dist
 pennylane_extra.egg-info
 .idea
-*.ipynb
 *.ipynb_checkpoints
 *.egg-info*
 .coverage

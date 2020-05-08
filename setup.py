@@ -24,7 +24,10 @@ with open("pennylane_extra/_version.py") as f:
 # Requirements should be as minimal as possible.
 # Avoid pinning, and use minimum version numbers
 # only where required.
-requirements = ["pennylane>=0.8.1", "PennyLane-qiskit>=0.8.2"]
+requirements = [
+  'pennylane @ git+https://github.com/XanaduAI/pennylane.git@54ec4caf946a6adef360874a743fa90bfa8c27d8#egg=pennylane',
+  'pennylane-qiskit @ git+https://github.com/XanaduAI/pennylane-qiskit.git@0f3d845587a7801795b3c1a19de2a3282f9b17c3#egg=pennylane-qiskit'
+]
 
 info = {
     # 'name' is the name that will be used by pip for installation
@@ -40,7 +43,9 @@ info = {
         # the plugin in Python.
         "pennylane_extra"
     ],
-    "entry_points": {"pennylane.plugins": ["extra = pennylane_extra"]},
+
+    #"entry_points": {"pennylane.misc": ["extra = pennylane_extra"]},
+
     # Place a one line description here. This will be shown by pip
     "description": "Extension to PennyLane adding various miscellaneous features",
     "long_description": open("README.rst").read(),

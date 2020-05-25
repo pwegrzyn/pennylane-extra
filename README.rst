@@ -29,6 +29,8 @@ PennyLane Extra requires both PennyLane and Qiskit. It can be installed via ``pi
 Currently only the 0.9.0-dev versions of PennyLane and PennyLane-qiskit are supported.
 They are specified as dependencies to this package.
 
+*Note*: The documentation is currently is WiP.
+
 Please refer to the `plugin documentation <https://pennylane-extra.readthedocs.io/>`_ as
 well as to the `PennyLane documentation <https://pennylane.readthedocs.io/>`_ for further reference.
 

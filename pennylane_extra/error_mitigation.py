@@ -3,6 +3,7 @@ import random
 from typing import Callable, Any
 from contextlib import contextmanager
 from functools import wraps
+from dataclasses import dataclass
 
 import numpy as np
 import pennylane as qml
@@ -12,7 +13,15 @@ from qiskit.ignis.mitigation.measurement import complete_meas_cal, CompleteMeasF
 
 NUMBER_OF_SHOTS_FOR_QISKIT_ERROR_MITIGATION = 1024
 
-_old_generate_samples_global = None
+
+@dataclass
+class _SwappedItemsMap:
+    """
+      Mainly to avoid a unnecessary global, but can be extended if more functionalities would
+      need to be swapped out temporarily
+    """
+
+    old_generate_samples_global: Callable[..., Any]
 
 
 def _qiskit_generate_samples_MEM(self: QiskitDevice) -> np.array:
@@ -34,6 +43,7 @@ def _qiskit_generate_samples_MEM(self: QiskitDevice) -> np.array:
     mitigation_run_args["shots"] = NUMBER_OF_SHOTS_FOR_QISKIT_ERROR_MITIGATION
     meas_job = qiskit.execute(meas_calibs, backend=self.backend, **mitigation_run_args)
 
+    # TODO: Adding a cache here is a free performance boost
     meas_fitter = CompleteMeasFitter(meas_job.result(), state_labels, circlabel="mcal")
     mitigated_results = meas_fitter.filter.apply(self._current_job.result())
     current_job_shots = sum(self._current_job.result().get_counts().values())
@@ -73,8 +83,7 @@ def globally_enable_qiskit_measurement_error_mitigation() -> None:
         is measurement-error-mitigated (i.e. we apply the filter from CompleteMeasFitter
         to the result of the computation).
     """
-    global _old_generate_samples_global
-    _old_generate_samples_global = QiskitDevice.generate_samples
+    _SwappedItemsMap.old_generate_samples_global = QiskitDevice.generate_samples
     QiskitDevice.generate_samples = _qiskit_generate_samples_MEM
 
 
@@ -83,10 +92,9 @@ def globally_disable_qiskit_measurement_error_mitigation() -> None:
     """
         Undo the effect of globally_enable_qiskit_measurement_error_mitigation()
     """
-    global _old_generate_samples_global
-    if _old_generate_samples_global is None:
+    if _SwappedItemsMap.old_generate_samples_global is None:
         raise Exception("The global context has been corrupted! Cannot undo the operation.")
-    QiskitDevice.generate_samples = _old_generate_samples_global
+    QiskitDevice.generate_samples = _SwappedItemsMap.old_generate_samples_global
 
 
 @contextmanager
@@ -97,6 +105,7 @@ def qiskit_measurement_error_mitigation() -> None:
     """
     old_generate_samples = QiskitDevice.generate_samples
     QiskitDevice.generate_samples = _qiskit_generate_samples_MEM
+
     try:
         yield
     finally:

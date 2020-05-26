@@ -103,6 +103,7 @@ def qiskit_measurement_error_mitigation(shots=1024) -> None:
         The same as globally_enable_qiskit_measurement_error_mitigation() but in the form
         of a context manager
     """
+    global NUMBER_OF_SHOTS_FOR_QISKIT_ERROR_MITIGATION
     NUMBER_OF_SHOTS_FOR_QISKIT_ERROR_MITIGATION = shots
     old_generate_samples = QiskitDevice.generate_samples
     QiskitDevice.generate_samples = _qiskit_generate_samples_MEM

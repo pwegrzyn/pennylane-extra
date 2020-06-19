@@ -37,7 +37,7 @@ well as to the `PennyLane documentation <https://pennylane.readthedocs.io/>`_ fo
 Getting started
 ===============
 
-Once PennyLane Extra is installed, you can start using it's featrues.
+Once PennyLane Extra is installed, you can start using it's featrues right away.
 
 .. code-block:: python
 
